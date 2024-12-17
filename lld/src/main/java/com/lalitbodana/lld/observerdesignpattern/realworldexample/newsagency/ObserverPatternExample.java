@@ -17,4 +17,6 @@ public class ObserverPatternExample {
         newsAgency.removeObserver(mobileSubscriber);
         newsAgency.publishNews("Update: Observer Pattern made easy!");
     }
+
+
 }
