@@ -9,6 +9,20 @@ public class Subsets {
         helper(arr, 0, new ArrayList<>());
     }
 
+    public List<List<Integer>> subset(int[] arr) {
+        List<List<Integer>> ans = new ArrayList<>();
+        ans.add(new ArrayList<>());
+        for (int a : arr) {
+            int size = ans.size();
+            for (int i = 0; i < size; i++) {
+                List<Integer> subset = new ArrayList<>(ans.get(i));
+                subset.add(a);
+                ans.add(subset);
+            }
+        }
+        return ans;
+    }
+
     public static void helper(int[] arr, int idx, List<Integer> ans) {
         if (idx == arr.length) {
             System.out.println(ans);
