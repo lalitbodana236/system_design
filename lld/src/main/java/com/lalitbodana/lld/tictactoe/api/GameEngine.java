@@ -1,9 +1,13 @@
-package com.lalitbodana.lld.tictactoe;
+package com.lalitbodana.lld.tictactoe.api;
 
-public class Main {
-    public static void main(String[] args) {
+import com.lalitbodana.lld.tictactoe.board.TicTacToeBoard;
+import com.lalitbodana.lld.tictactoe.game.Board;
+import com.lalitbodana.lld.tictactoe.game.GameResult;
+import com.lalitbodana.lld.tictactoe.game.Move;
+import com.lalitbodana.lld.tictactoe.game.Player;
 
-    }
+public class GameEngine {
+
 
     public Board start() {
         return new Board();
@@ -23,9 +27,9 @@ public class Main {
             String firstCharacter = "-";
             for (int i = 0; i < 3; i++) {
                 rowComplete = true;
-                firstCharacter = board1.cell[i][0];
+                firstCharacter = board1.getCell(i, 0);
                 for (int j = 1; j < 3; j++) {
-                    if (!board1.cell[i][j].equals(firstCharacter)) {
+                    if (!board1.getCell(i, j).equals(firstCharacter)) {
                         rowComplete = false;
                         break;
                     }
@@ -37,9 +41,9 @@ public class Main {
 
             for (int i = 0; i < 3; i++) {
                 colComplete = true;
-                firstCharacter = board1.cell[0][i];
+                firstCharacter = board1.getCell(0, i);
                 for (int j = 1; j < 3; j++) {
-                    if (!board1.cell[j][i].equals(firstCharacter)) {
+                    if (!board1.getCell(j, i).equals(firstCharacter)) {
                         colComplete = false;
                         break;
                     }
@@ -51,8 +55,8 @@ public class Main {
 
             for (int i = 0; i < 3; i++) {
                 diagComplete = true;
-                firstCharacter = board1.cell[0][0];
-                if (!board1.cell[i][i].equals(firstCharacter)) {
+                firstCharacter = board1.getCell(0, 0);
+                if (!board1.getCell(i, i).equals(firstCharacter)) {
                     diagComplete = false;
                     break;
                 }
@@ -62,8 +66,8 @@ public class Main {
 
             for (int i = 0; i < 3; i++) {
                 revDiagComplete = true;
-                firstCharacter = board1.cell[0][2];
-                if (!board1.cell[i][2 - i].equals(firstCharacter)) {
+                firstCharacter = board1.getCell(0, 2);
+                if (!board1.getCell(i, 2 - i).equals(firstCharacter)) {
                     revDiagComplete = false;
                     break;
                 }
@@ -77,7 +81,7 @@ public class Main {
 
             for (int i = 0; i < 3; i++) {
                 for (int j = 1; j < 3; j++) {
-                    if (board1.cell[i][j] != null) {
+                    if (board1.getCell(i, j) != null) {
                         countOffFilledCells++;
                     }
                 }
@@ -94,28 +98,3 @@ public class Main {
     }
 }
 
-class Board {
-
-}
-
-class TicTacToeBoard extends Board {
-    String[][] cell = new String[3][3];
-}
-
-class Player {
-
-}
-
-class Move {
-
-}
-
-class GameResult {
-    boolean isOver;
-    String winner;
-
-    public GameResult(boolean isOver, String winner) {
-        this.isOver = isOver;
-        this.winner = winner;
-    }
-}
