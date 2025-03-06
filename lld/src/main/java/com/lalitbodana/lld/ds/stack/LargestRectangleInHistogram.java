@@ -6,7 +6,53 @@ public class LargestRectangleInHistogram {
     public static void main(String[] args) {
         int[] heights = {2, 1, 5, 6, 2, 3};
         //Output: 10
-        System.out.println(largestRectangleArea(heights));
+        maxArea(heights);
+    }
+
+    public static void maxArea(int[] arr) {
+        int maxArea = 0;
+        int[] ps = prevSmaller(arr);
+        int[] ns = nextSmaller(arr);
+        for (int i = 0; i < arr.length; i++) {
+            int cur = (ns[i] - ps[i] - 1) * arr[i];
+            maxArea = Math.max(maxArea, cur);
+        }
+
+        System.out.println(maxArea);
+    }
+
+
+    public static int[] prevSmaller(int[] arr) {
+        int[] ps = new int[arr.length];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < arr.length; i++) {
+
+            while (!stack.isEmpty() && arr[stack.peek()] >= arr[i]) {
+                stack.pop();
+            }
+
+            ps[i] = stack.isEmpty() ? -1 : stack.peek();
+
+            stack.push(i);
+        }
+
+        return ps;
+    }
+
+    public static int[] nextSmaller(int[] arr) {
+        int[] ns = new int[arr.length];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = arr.length - 1; i >= 0; i--) {
+
+            while (!stack.isEmpty() && arr[stack.peek()] >= arr[i]) {
+                stack.pop();
+            }
+
+            ns[i] = stack.isEmpty() ? -1 : stack.peek();
+
+            stack.push(i);
+        }
+        return ns;
     }
 
     public static int largestRectangleArea(int[] heights) {
@@ -20,7 +66,7 @@ public class LargestRectangleInHistogram {
             while (!stack.isEmpty() && h < heights[stack.peek()]) {
                 int height = heights[stack.pop()];
                 int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-
+                System.out.println(height * width);
                 maxArea = Math.max(maxArea, height * width);
             }
 
