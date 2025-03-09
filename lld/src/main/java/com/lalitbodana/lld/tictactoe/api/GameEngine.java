@@ -1,20 +1,26 @@
 package com.lalitbodana.lld.tictactoe.api;
 
 import com.lalitbodana.lld.tictactoe.board.TicTacToeBoard;
-import com.lalitbodana.lld.tictactoe.game.Board;
-import com.lalitbodana.lld.tictactoe.game.GameResult;
-import com.lalitbodana.lld.tictactoe.game.Move;
-import com.lalitbodana.lld.tictactoe.game.Player;
+import com.lalitbodana.lld.tictactoe.game.*;
 
 public class GameEngine {
 
 
-    public Board start() {
-        return new Board();
+    public Board start(String type) {
+        if (type.equals("TicTacToe")) {
+            return new TicTacToeBoard();
+        } else {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     public void move(Board board, Player player, Move move) {
-
+        if (board instanceof TicTacToeBoard board1) {
+            board1.setCell(move.getCell(), player.symbol());
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public GameResult isComplete(Board board) {
@@ -94,6 +100,21 @@ public class GameEngine {
             }
         } else {
             return new GameResult(false, "-");
+        }
+    }
+
+    public Move suggestMove(Player computer, Board board) {
+        if (board instanceof TicTacToeBoard board1) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (board1.getCell(i, j) == null) {
+                        return new Move(new Cell(i, j));
+                    }
+                }
+            }
+            throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 }
