@@ -1,13 +1,13 @@
 package com.lalitbodana.lld.ds.linkedlist;
 
-public class Node {
+public class ListNode {
     int data;
-    Node next;
+    ListNode next;
 
-    public Node(int data) {
+    public ListNode(int data) {
         this.data = data;
     }
 
-    public Node() {
+    public ListNode() {
     }
 }
