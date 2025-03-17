@@ -17,10 +17,13 @@ public class LinkedListUtils {
     }
 
     public static void print(ListNode node) {
-        System.out.println();
+        System.out.println("\nLinked List Representation:");
         ListNode temp = node;
         while (temp != null) {
-            System.out.print(temp.data + " ");
+            System.out.print(temp.data);
+            if (temp.next != null) {
+                System.out.print(" -> ");
+            }
             temp = temp.next;
         }
         System.out.println();
