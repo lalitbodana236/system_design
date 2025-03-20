@@ -1,6 +1,6 @@
-package com.lalitbodana.lld.observerdesignpattern.observable;
+package com.lalitbodana.lld.observerdesignpattern.store.observable;
 
-import com.lalitbodana.lld.observerdesignpattern.observer.NotificationAlertObserver;
+import com.lalitbodana.lld.observerdesignpattern.store.observer.NotificationAlertObserver;
 
 import java.util.ArrayList;
 import java.util.List;

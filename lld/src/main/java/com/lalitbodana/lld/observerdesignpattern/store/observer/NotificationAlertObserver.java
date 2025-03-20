@@ -1,4 +1,4 @@
-package com.lalitbodana.lld.observerdesignpattern.observer;
+package com.lalitbodana.lld.observerdesignpattern.store.observer;
 
 public interface NotificationAlertObserver {
 

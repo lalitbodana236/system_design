@@ -1,6 +1,6 @@
-package com.lalitbodana.lld.observerdesignpattern.observer;
+package com.lalitbodana.lld.observerdesignpattern.store.observer;
 
-import com.lalitbodana.lld.observerdesignpattern.observable.StocksObservable;
+import com.lalitbodana.lld.observerdesignpattern.store.observable.StocksObservable;
 
 public class EmailAlertObserverImpl implements NotificationAlertObserver {
 

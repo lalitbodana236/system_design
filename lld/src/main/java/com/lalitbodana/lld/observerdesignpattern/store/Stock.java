@@ -1,10 +1,10 @@
 package com.lalitbodana.lld.observerdesignpattern.store;
 
-import com.lalitbodana.lld.observerdesignpattern.observable.IphoneObservalbleImpl;
-import com.lalitbodana.lld.observerdesignpattern.observable.StocksObservable;
-import com.lalitbodana.lld.observerdesignpattern.observer.EmailAlertObserverImpl;
-import com.lalitbodana.lld.observerdesignpattern.observer.MobileAlertObserverImpl;
-import com.lalitbodana.lld.observerdesignpattern.observer.NotificationAlertObserver;
+import com.lalitbodana.lld.observerdesignpattern.store.observable.IphoneObservalbleImpl;
+import com.lalitbodana.lld.observerdesignpattern.store.observable.StocksObservable;
+import com.lalitbodana.lld.observerdesignpattern.store.observer.EmailAlertObserverImpl;
+import com.lalitbodana.lld.observerdesignpattern.store.observer.MobileAlertObserverImpl;
+import com.lalitbodana.lld.observerdesignpattern.store.observer.NotificationAlertObserver;
 
 public class Stock {
     public static void main(String[] args) {
