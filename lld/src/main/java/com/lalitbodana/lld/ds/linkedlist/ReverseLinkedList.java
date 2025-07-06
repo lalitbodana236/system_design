@@ -12,7 +12,7 @@ public class ReverseLinkedList {
         n3.next = n4;
         n4.next = n5;
     }
-
+    
     public static void reverse(ListNode head) {
         ListNode cur = head;
         ListNode prev = null;
@@ -22,5 +22,15 @@ public class ReverseLinkedList {
             prev = cur;
             cur = next;
         }
+    }
+    
+    public ListNode reverseRec(ListNode head) {
+        if (head == null || head.next == null) return head;
+        
+        ListNode node = reverseRec(head.next);
+        head.next.next = head;
+        head.next = null;
+        
+        return node;
     }
 }
