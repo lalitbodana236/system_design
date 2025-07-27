@@ -16,6 +16,8 @@ public class MyStack {
         m.push(2);
         m.push(3);
         m.print();
+        
+        
     }
     
     public void push(int x) {
