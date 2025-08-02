@@ -1,13 +1,11 @@
 package com.lalitbodana.lld.designpattern.practice.parkinglot.spot;
 
-import com.lalitbodana.lld.designpattern.practice.parkinglot.MiniParkingSpot;
-
 public class ParkingSpotFactory {
     
-    public static ParkingSpot getFactory(String type, int floor) {
+    public static ParkingSpot getFactory(String type) {
         return switch (type) {
-            case "MINI" -> new MiniParkingSpot(floor);
-            case "COMPACT" -> new CompactParkingSpot(floor);
+            case "MINI" -> new MiniParkingSpot();
+            case "COMPACT" -> new CompactParkingSpot();
             default -> throw new RuntimeException("invalid parking spot");
         };
     }

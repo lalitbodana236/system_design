@@ -1,4 +1,4 @@
-package com.lalitbodana.lld.designpattern.practice.parkinglot.entity;
+package com.lalitbodana.lld.designpattern.practice.parkinglot.dto;
 
 public class Compact extends Vehicle {
     public Compact(String licensePlate) {

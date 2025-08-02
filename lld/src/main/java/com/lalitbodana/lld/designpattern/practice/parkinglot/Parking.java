@@ -1,40 +1,39 @@
 package com.lalitbodana.lld.designpattern.practice.parkinglot;
 
-import com.lalitbodana.lld.designpattern.practice.parkinglot.entity.Compact;
-import com.lalitbodana.lld.designpattern.practice.parkinglot.entity.Mini;
-import com.lalitbodana.lld.designpattern.practice.parkinglot.entity.Vehicle;
-import com.lalitbodana.lld.designpattern.practice.parkinglot.spot.ParkingSpot;
-import com.lalitbodana.lld.designpattern.practice.parkinglot.spot.ParkingSpotFactory;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import com.lalitbodana.lld.designpattern.practice.parkinglot.dto.*;
+import com.lalitbodana.lld.designpattern.practice.parkinglot.spot.CompactParkingSpot;
+import com.lalitbodana.lld.designpattern.practice.parkinglot.spot.MiniParkingSpot;
 
 public class Parking {
     
     public static void main(String[] args) {
-        ParkingLot parkingLot = ParkingLot.getInstance(3, 3);
-        AtomicInteger spotId = new AtomicInteger(1);
-        ParkingSpot miniSpot1 = ParkingSpotFactory.getFactory("MINI", spotId.getAndIncrement());
-        ParkingSpot miniSpot2 = ParkingSpotFactory.getFactory("MINI", spotId.getAndIncrement());
-        ParkingSpot compactSpot1 = ParkingSpotFactory.getFactory("COMPACT", spotId.getAndIncrement());
+        ParkingLot lot = ParkingLot.getInstance();
         
-        parkingLot.addParkingSpot(miniSpot1);
-        parkingLot.addParkingSpot(miniSpot2);
-        parkingLot.addParkingSpot(compactSpot1);
+        ParkingFloor floor0 = new ParkingFloor(0, 2);
+        floor0.addSpot(new MiniParkingSpot());
+        floor0.addSpot(new CompactParkingSpot());
         
-        parkingLot.getAvailableSpots();
+        ParkingFloor floor1 = new ParkingFloor(1, 5);
+        floor1.addSpot(new MiniParkingSpot());
+        floor1.addSpot(new CompactParkingSpot());
         
-        Vehicle miniVeh1 = new Mini("MP09MM1111");
-        Vehicle miniVeh2 = new Mini("MP09MM1112");
-        Vehicle miniVeh3 = new Mini("MP09MM1113");
-        Vehicle miniVeh4 = new Mini("MP09MM1114");
+        lot.addFloor(0, floor0);
+        lot.addFloor(1, floor1);
+        lot.displayAvailableSpots();
+        Vehicle car1 = new Compact("GJ05AB1234");
+        Vehicle car2 = new Mini("MH12CD4567");
+        
+        Ticket ticket1 = lot.parkVehicle(car1);
+        Ticket ticket2 = lot.parkVehicle(car2);
+        
+        lot.displayAvailableSpots();
         
         
-        Vehicle compactVeh1 = new Compact("MP09CC1111");
-        Vehicle compactVeh2 = new Compact("MP09CC1112");
+        lot.leaveVehicle(ticket2);
+        lot.displayAvailableSpots();
+        lot.leaveVehicle(ticket1);
         
-        parkingLot.parkVehicle(miniVeh1);
-        parkingLot.parkVehicle(miniVeh2);
-        parkingLot.parkVehicle(miniVeh3);
-        parkingLot.parkVehicle(compactVeh1);
+        lot.displayAvailableSpots();
+        
     }
 }
