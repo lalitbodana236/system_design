@@ -32,6 +32,7 @@ public class ExpenseManager {
         expenseService.addExpense(expense);
         System.out.println("\n🔍 Showing individual balance:");
         expenseService.showBalance(u1.getName());
+        expenseService.settleAmount(u2.getName(),u1.getName(),100);
         
         System.out.println("\n📊 Showing all balances:");
         expenseService.showBalances();

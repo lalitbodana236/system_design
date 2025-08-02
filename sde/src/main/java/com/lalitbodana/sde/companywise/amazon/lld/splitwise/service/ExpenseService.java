@@ -20,39 +20,29 @@ public class ExpenseService {
     }
     
     public void addExpense(Expense expense) {
-        
         expenseMap.put(expense.getId(), expense);
-        
         if (expense.getType() == SplitType.EQUAL) {
             int splitAmount = expense.getAmount() / expense.getSplits().size();
             for (Split split : expense.getSplits()) {
                 String paidTo = split.getUserId();
                 if (paidTo.equals(expense.getPaidBy())) continue; // skip self
                 
-                // PaidBy -> PaidTo
-                balanceMap
-                        .computeIfAbsent(expense.getPaidBy(), k -> new HashMap<>())
-                        .put(paidTo, balanceMap.get(expense.getPaidBy()).getOrDefault(paidTo, 0) + splitAmount);
-                
-                // PaidTo -> PaidBy (reverse negative entry)
-                balanceMap
-                        .computeIfAbsent(paidTo, k -> new HashMap<>())
-                        .put(expense.getPaidBy(), balanceMap.get(paidTo).getOrDefault(expense.getPaidBy(), 0) - splitAmount);
+                settleAmount(expense.getPaidBy(),split.getUserId(),splitAmount);
             }
         }
-        
-        System.out.println(balanceMap);
-        
     }
     
-    void settleAmount(String paidBy, String paidTo, int amount) {
-        Map<String, Integer> paidByPersonMap = balanceMap.get(paidBy);
+   public void settleAmount(String paidBy, String paidTo, int amount) {
+       // PaidBy -> PaidTo
+        balanceMap
+                .computeIfAbsent(paidBy, k -> new HashMap<>())
+                .put(paidTo, balanceMap.get(paidBy).getOrDefault(paidTo, 0) + amount);
         
-        paidByPersonMap.put(paidTo, paidByPersonMap.getOrDefault(paidTo, 0) - amount);
+        // PaidTo -> PaidBy (reverse negative entry)
+        balanceMap
+                .computeIfAbsent(paidTo, k -> new HashMap<>())
+                .put(paidBy, balanceMap.get(paidTo).getOrDefault(paidBy, 0) - amount);
         
-        Map<String, Integer> paidToPersonMap = balanceMap.get(paidTo);
-        
-        paidToPersonMap.put(paidBy, paidToPersonMap.getOrDefault(paidBy, 0) + amount);
         
     }
     
@@ -62,7 +52,6 @@ public class ExpenseService {
     
     public void showBalance(String userId) {
         boolean isEmpty = true;
-        System.out.println(balanceMap.get(userId));
         for (Map.Entry<String, Integer> userBalance : balanceMap.get(userId).entrySet()) {
             if (userBalance.getValue() != 0) {
                 isEmpty = false;
