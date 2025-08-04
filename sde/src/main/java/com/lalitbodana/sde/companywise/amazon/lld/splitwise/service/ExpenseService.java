@@ -46,7 +46,7 @@ public class ExpenseService {
         
     }
     
-    void simplifyDebt(String groupId) {
+    void simplifyDebt() {
     
     }
     
