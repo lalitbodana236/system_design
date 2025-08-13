@@ -89,4 +89,34 @@ public class Board {
         System.out.println("Snakes (head -> tail): " + snakesMap);
         System.out.println("Ladders (start -> end): " + laddersMap);
     }
+    
+    public static Board generate2(int size, int numSnakes, int numLadders) {
+        Random random = new Random();
+       // Map<Integer, Integer> snakes = new HashMap<>();
+        //Map<Integer, Integer> ladders = new HashMap<>();
+        List<Snake> snakes = new ArrayList<>();
+        List<Ladder> ladders = new ArrayList<>();
+        
+        // Generate snakes
+        for (int i = 0; i < numSnakes; i++) {
+            int head = random.nextInt(size - 2) + 2; // 2..size-1
+            int tail = random.nextInt(head - 1) + 1; // 1..head-1
+           // snakes.put(head, tail);
+            snakes.add(new Snake(head, tail));
+        }
+        
+        // Generate ladders
+        for (int i = 0; i < numLadders; i++) {
+            int start = random.nextInt(size - 2) + 1; // 1..size-2
+            int end = random.nextInt(size - start) + start + 1; // > start
+           // ladders.put(start, end);
+            ladders.add(new Ladder(start, end));
+        }
+        
+        return new Board(size, snakes, ladders);
+    }
+    
+    
+    
+    
 }

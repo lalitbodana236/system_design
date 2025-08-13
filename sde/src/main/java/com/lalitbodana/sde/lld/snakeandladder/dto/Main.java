@@ -28,7 +28,8 @@ public class Main {
         }
         
         // Programmatically generate board with snakes & ladders
-        Board board = Board.generate(boardSize, numSnakes, numLadders);
+       // Board board = Board.generate(boardSize, numSnakes, numLadders);
+        Board board = Board.generate2(boardSize, numSnakes, numLadders);
         
         // (Optional) print generated layout for debugging
         board.printLayout();
