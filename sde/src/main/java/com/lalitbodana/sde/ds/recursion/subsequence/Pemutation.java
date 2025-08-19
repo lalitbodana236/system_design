@@ -11,9 +11,9 @@ public class Pemutation {
         for (List<Integer> p : permutations)
             System.out.println(p);
 
-        List<List<Integer>> permutationsOptimised = permute(new int[]{1, 2, 3});
-        for (List<Integer> p : permutationsOptimised)
-            System.out.println(p);
+        //List<List<Integer>> permutationsOptimised = permute(new int[]{1, 2, 3});
+       // for (List<Integer> p : permutationsOptimised)
+         //   System.out.println(p);
     }
 
     public static List<List<Integer>> generate(int[] arr, List<Integer> list) {
@@ -39,7 +39,7 @@ public class Pemutation {
             // Creating a new list to maintain state
             List<Integer> newList = new ArrayList<>(list);
             newList.add(ans);
-
+            System.out.println(ans);
             permutations.addAll(generate(newArr, newList));
         }
 
@@ -55,6 +55,7 @@ public class Pemutation {
 
     private static void generatePermutations(int[] nums, List<Integer> current, boolean[] used, List<List<Integer>> result) {
         if (current.size() == nums.length) {
+            System.out.println(current);
             result.add(new ArrayList<>(current));
             return;
         }

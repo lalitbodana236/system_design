@@ -6,6 +6,11 @@ import java.util.List;
 public class NQueens {
     public static void main(String[] args) {
         int n = 4; // Change this for different board sizes
+        
+        List<Integer> list = new ArrayList();
+        list.stream().mapToInt(Integer::intValue).toArray();
+        
+        
         boolean[][] board = new boolean[n][n];
         List<List<String>> ans = new ArrayList<>();
 

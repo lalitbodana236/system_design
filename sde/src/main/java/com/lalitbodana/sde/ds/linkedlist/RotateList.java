@@ -19,15 +19,19 @@ public class RotateList {
         
         tail.next = head;
         k = k % len;
-        
+        System.out.println(k +" "+ len);
         int stepsToNewTail = len - k;
+        
+        System.out.println(stepsToNewTail);
         ListNode newTail = tail;
+        System.out.println(newTail.data);
         while (stepsToNewTail-- > 0) {
             newTail = newTail.next;
         }
-        
+        System.out.println("val "+newTail.data);
         ListNode newHead = newTail.next;
         newTail.next = null;
+        System.out.println("val "+newHead.data);
         return newHead;
     }
     

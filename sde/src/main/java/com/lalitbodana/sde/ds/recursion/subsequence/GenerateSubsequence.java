@@ -3,7 +3,7 @@ package com.lalitbodana.sde.ds.recursion.subsequence;
 public class GenerateSubsequence {
 
     public static void main(String[] args) {
-        subsequence("abc", "");
+        subsequence("abcde", "");
     }
 
     public static void subsequence(String str, String ans) {
@@ -17,7 +17,7 @@ public class GenerateSubsequence {
 
         //prepare new string
         String newStr = str.substring(1);
-
+        System.out.println("newstr "+ newStr);
         //call-01 part of an answer
         subsequence(newStr, ans + ch);
 
