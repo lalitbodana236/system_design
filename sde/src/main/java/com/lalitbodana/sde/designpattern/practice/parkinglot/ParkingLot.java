@@ -1,110 +1,68 @@
 package com.lalitbodana.sde.designpattern.practice.parkinglot;
 
-import com.lalitbodana.sde.designpattern.practice.parkinglot.dto.ParkingFloor;
-import com.lalitbodana.sde.designpattern.practice.parkinglot.dto.Ticket;
-import com.lalitbodana.sde.designpattern.practice.parkinglot.dto.Vehicle;
-import com.lalitbodana.sde.designpattern.practice.parkinglot.spot.ParkingSpot;
+import com.lalitbodana.sde.designpattern.practice.parkinglot.strategy.IFareCalculationStrategy;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ParkingLot {
-    private static ParkingLot INSTANCE;
+    private final Map<Integer,ParkingFloor> parkingFloorMap;
     
-    private Map<Integer, ParkingFloor> floors;
-    private Map<String, Ticket> activeTickets;
+    private final IFareCalculationStrategy fareCalculationStrategy;
     
-    private ParkingLot() {
-        this.floors = new HashMap<>();
-        this.activeTickets = new HashMap<>();
+    public ParkingLot(Map<Integer, ParkingFloor> parkingFloorMap, IFareCalculationStrategy fareCalculationStrategy) {
+        this.parkingFloorMap = parkingFloorMap;
+        this.fareCalculationStrategy = fareCalculationStrategy;
     }
     
-    public static ParkingLot getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ParkingLot();
-        }
-        return INSTANCE;
+    public void addParkingFloor(ParkingFloor floor){
+        this.parkingFloorMap.put(floor.getFloorId(),floor);
     }
     
-    public void addFloor(int floorNumber, ParkingFloor floor) {
-        floors.put(floorNumber, floor);
-    }
-    
-    public Ticket parkVehicle(Vehicle vehicle) {
-        for (ParkingFloor floor : floors.values()) {
-            ParkingSpot spot = floor.findAvailableSpot(vehicle);
-            if (spot != null) {
-                spot.parkVehicle(vehicle);
-                Ticket ticket = new Ticket(vehicle.getLicensePlate(), floor.getFloorNumber(), spot.getId());
-                activeTickets.put(ticket.getTicketId(), ticket);
-                return ticket;
+    public Ticket park(Vehicle vehicle){
+        ParkingType type = vehicle.getVehicleType();
+        for(Map.Entry<Integer,ParkingFloor> floorEntry : this.parkingFloorMap.entrySet()){
+            if(!floorEntry.getValue().getVacantSpots().get(type).isEmpty()){
+                ParkingSpot spot = floorEntry.getValue().getVacantSpots().get(type).get(0);
+                
+                spot.setAvailable(false);
+                
+                // mark it as occupied
+                spot.setAvailable(false);
+                
+                // move it to occupied spots
+                floorEntry.getValue().getVacantSpots().get(type).remove(spot);
+                floorEntry.getValue().getOccupiedSpots().get(type).add(spot);
+                
+                // issue a ticket
+                Ticket ticket = new Ticket();
+                ticket.setParkingSpot(spot);
+                ticket.setVehicle(vehicle);
             }
-        }
-        System.out.println("No available spot for vehicle " + vehicle.getLicensePlate());
-        return null;
-    }
-    
-    public void leaveVehicle(Ticket ticket) {
         
-        if (ticket == null) {
-            System.out.println("Invalid ticket");
-            return;
         }
         
-        if (activeTickets.get(ticket.getTicketId()) != null) {
-            ParkingFloor floor = floors.get(ticket.getFloorNumber());
-            for (ParkingSpot spot : floor.spots) {
-                if (spot.getId() == ticket.getSpotId()) {
-                    spot.freeSpot();
-                    break;
-                }
-            }
-            ticket.setExitTime(new Date());
-            
-            activeTickets.remove(ticket.getTicketId());
-            
-            priceCalculation(ticket);
-        }
-        
-        
+        throw new RuntimeException("Parking Lot is full");
     }
     
-    public void priceCalculation(Ticket ticket) {
-        if (ticket != null && ticket.getEntryTime() != null && ticket.getExitTime() != null) {
-            long durationInMillis = ticket.getExitTime().getTime() - ticket.getEntryTime().getTime();
-            long durationInHours = (long) Math.ceil(durationInMillis / (1000.0 * 60 * 60)); // Round up to next hour
-            
-            long amount = 0;
-            if (durationInHours <= 1) {
-                amount = 20; // ₹20 for first hour
-            } else {
-                amount = 20 + (durationInHours - 1) * 10; // ₹10 for each extra hour
-            }
-            System.out.println("**************TICKET**************");
-            System.out.println("Parking duration: " + durationInHours + " hour(s)");
-            System.out.println("Total parking fee: ₹" + amount);
-            System.out.println("**********************************");
-        } else {
-            System.out.println("Ticket is invalid or entry/exit time not set.");
-        }
-    }
-    
-    public void displayAvailableSpots() {
-        System.out.println("-------------DISPLAY-------------");
-        for (ParkingFloor floor : floors.values()) {
-            System.out.println("Floor " + floor.getFloorNumber() + " Spot Stats: Floor Total Capacity: " + floor.capacity);
-            Map<String, ParkingFloor.SpotCount> stats = floor.getSpotStatsByType();
-            int totalCapacity = 0;
-            
-            for (Map.Entry<String, ParkingFloor.SpotCount> entry : stats.entrySet()) {
-                String type = entry.getKey();
-                ParkingFloor.SpotCount count = entry.getValue();
-                System.out.println("  Spot Type: " + type + " | Total: " + count.total + " | Available: " + count.available);
-            }
-            System.out.println("-------------DISPLAY-------------");
-            System.out.println();
-        }
+    public Double unpark(Ticket ticket) {
+        // calculate fare
+        Double parkingCharges = fareCalculationStrategy.calculateFare(ticket);
+       // Double parkingCharges=0.0;
+        
+        // mark spot as vacant
+        ParkingSpot parkingSpot = ticket.getParkingSpot();
+        parkingSpot.setAvailable(true);
+        
+        // move the spot to vacant list
+        this.parkingFloorMap.get(parkingSpot.getFloor()).getOccupiedSpots()
+                .get(parkingSpot.getParkingType())
+                .remove(parkingSpot);
+        
+        this.parkingFloorMap.get(parkingSpot.getFloor()).getVacantSpots()
+                .get(parkingSpot.getParkingType())
+                .add(parkingSpot);
+        
+        //dashboard.notify(ticket, ParkingEventType.UNPARK);
+        return parkingCharges;
     }
 }
-
