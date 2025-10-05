@@ -1,6 +1,7 @@
 package com.lalitbodana.sde.designpattern.practice.cache;
 
-import com.lalitbodana.sde.lld.cache.dto.Node;
+import com.lalitbodana.sde.designpattern.practice.cache.dto.Node;
+
 
 import java.util.HashMap;
 import java.util.Map;
